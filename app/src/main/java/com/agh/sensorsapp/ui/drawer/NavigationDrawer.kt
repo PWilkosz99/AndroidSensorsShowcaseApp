@@ -32,6 +32,7 @@ import com.agh.sensorsapp.ui.HomeScreen
 import com.agh.sensorsapp.ui.SettingsScreen
 import com.agh.sensorsapp.ui.GravityScreen
 import com.agh.sensorsapp.ui.GyroscopeScreen
+import com.agh.sensorsapp.ui.LinearAccelerationScreen
 import kotlinx.coroutines.launch
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
@@ -65,6 +66,12 @@ fun Drawer(navController: NavHostController) {
         NavigationItem(
             title = "Gyroscope",
             route = "gyroscope",
+            selectedIcon = Icons.Filled.Settings,
+            unselectedIcon = Icons.Outlined.Settings,
+        ),
+        NavigationItem(
+            title = "Linear Acceleration",
+            route = "linear_acceleration",
             selectedIcon = Icons.Filled.Settings,
             unselectedIcon = Icons.Outlined.Settings,
         ),
@@ -120,6 +127,9 @@ fun Drawer(navController: NavHostController) {
                     }
                     composable("gyroscope") {
                         GyroscopeScreen()
+                    }
+                    composable("linear_acceleration") {
+                        LinearAccelerationScreen()
                     }
                 }
             }
