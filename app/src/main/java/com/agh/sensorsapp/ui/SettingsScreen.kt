@@ -1,4 +1,4 @@
-package com.agh.sensorsapp
+package com.agh.sensorsapp.ui
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.material3.ExperimentalMaterial3Api

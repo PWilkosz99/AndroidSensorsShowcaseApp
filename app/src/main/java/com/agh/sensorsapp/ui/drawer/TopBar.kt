@@ -1,4 +1,4 @@
-package com.agh.sensorsapp
+package com.agh.sensorsapp.ui.drawer
 
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Menu

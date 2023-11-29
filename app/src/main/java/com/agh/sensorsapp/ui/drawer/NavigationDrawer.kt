@@ -1,4 +1,4 @@
-package com.agh.sensorsapp
+package com.agh.sensorsapp.ui.drawer
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.Spacer
@@ -27,6 +27,10 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import com.agh.sensorsapp.ui.AccelerometerScreen
+import com.agh.sensorsapp.NavigationItem
+import com.agh.sensorsapp.ui.HomeScreen
+import com.agh.sensorsapp.ui.SettingsScreen
 import kotlinx.coroutines.launch
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
@@ -42,6 +46,12 @@ fun Drawer(navController: NavHostController) {
         NavigationItem(
             title = "Settings",
             route = "settings",
+            selectedIcon = Icons.Filled.Settings,
+            unselectedIcon = Icons.Outlined.Settings,
+        ),
+        NavigationItem(
+            title = "Accelerometer",
+            route = "accelerometer",
             selectedIcon = Icons.Filled.Settings,
             unselectedIcon = Icons.Outlined.Settings,
         ),
@@ -88,6 +98,9 @@ fun Drawer(navController: NavHostController) {
                     }
                     composable("settings") {
                         SettingsScreen()
+                    }
+                    composable("accelerometer") {
+                        AccelerometerScreen()
                     }
                 }
             }
