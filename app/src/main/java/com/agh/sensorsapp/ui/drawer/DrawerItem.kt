@@ -7,7 +7,6 @@ import androidx.compose.material3.NavigationDrawerItem
 import androidx.compose.material3.NavigationDrawerItemDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import com.agh.sensorsapp.NavigationItem
 
 @Composable
 fun DrawerItem(

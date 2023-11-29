@@ -28,10 +28,10 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.agh.sensorsapp.ui.AccelerometerScreen
-import com.agh.sensorsapp.NavigationItem
 import com.agh.sensorsapp.ui.HomeScreen
 import com.agh.sensorsapp.ui.SettingsScreen
 import com.agh.sensorsapp.ui.GravityScreen
+import com.agh.sensorsapp.ui.GyroscopeScreen
 import kotlinx.coroutines.launch
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
@@ -59,6 +59,12 @@ fun Drawer(navController: NavHostController) {
         NavigationItem(
             title = "Gravity",
             route = "gravity",
+            selectedIcon = Icons.Filled.Settings,
+            unselectedIcon = Icons.Outlined.Settings,
+        ),
+        NavigationItem(
+            title = "Gyroscope",
+            route = "gyroscope",
             selectedIcon = Icons.Filled.Settings,
             unselectedIcon = Icons.Outlined.Settings,
         ),
@@ -111,6 +117,9 @@ fun Drawer(navController: NavHostController) {
                     }
                     composable("gravity") {
                         GravityScreen()
+                    }
+                    composable("gyroscope") {
+                        GyroscopeScreen()
                     }
                 }
             }
