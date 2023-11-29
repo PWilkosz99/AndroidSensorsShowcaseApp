@@ -31,6 +31,7 @@ import com.agh.sensorsapp.ui.AccelerometerScreen
 import com.agh.sensorsapp.NavigationItem
 import com.agh.sensorsapp.ui.HomeScreen
 import com.agh.sensorsapp.ui.SettingsScreen
+import com.agh.sensorsapp.ui.GravityScreen
 import kotlinx.coroutines.launch
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
@@ -52,6 +53,12 @@ fun Drawer(navController: NavHostController) {
         NavigationItem(
             title = "Accelerometer",
             route = "accelerometer",
+            selectedIcon = Icons.Filled.Settings,
+            unselectedIcon = Icons.Outlined.Settings,
+        ),
+        NavigationItem(
+            title = "Gravity",
+            route = "gravity",
             selectedIcon = Icons.Filled.Settings,
             unselectedIcon = Icons.Outlined.Settings,
         ),
@@ -101,6 +108,9 @@ fun Drawer(navController: NavHostController) {
                     }
                     composable("accelerometer") {
                         AccelerometerScreen()
+                    }
+                    composable("gravity") {
+                        GravityScreen()
                     }
                 }
             }
