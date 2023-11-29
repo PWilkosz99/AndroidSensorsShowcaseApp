@@ -33,6 +33,7 @@ import com.agh.sensorsapp.ui.SettingsScreen
 import com.agh.sensorsapp.ui.GravityScreen
 import com.agh.sensorsapp.ui.GyroscopeScreen
 import com.agh.sensorsapp.ui.LinearAccelerationScreen
+import com.agh.sensorsapp.ui.StepCounterAndDetectorScreen
 import kotlinx.coroutines.launch
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
@@ -75,6 +76,13 @@ fun Drawer(navController: NavHostController) {
             selectedIcon = Icons.Filled.Settings,
             unselectedIcon = Icons.Outlined.Settings,
         ),
+        NavigationItem(
+            title = "Step Counter and Detector",
+            route = "step_counter_and_detector",
+            selectedIcon = Icons.Filled.Settings,
+            unselectedIcon = Icons.Outlined.Settings,
+        ),
+
     )
 
     Surface(
@@ -130,6 +138,9 @@ fun Drawer(navController: NavHostController) {
                     }
                     composable("linear_acceleration") {
                         LinearAccelerationScreen()
+                    }
+                    composable("step_counter_and_detector") {
+                        StepCounterAndDetectorScreen()
                     }
                 }
             }
