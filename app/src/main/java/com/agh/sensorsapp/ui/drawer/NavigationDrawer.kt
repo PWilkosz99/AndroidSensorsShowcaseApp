@@ -33,6 +33,7 @@ import com.agh.sensorsapp.ui.SettingsScreen
 import com.agh.sensorsapp.ui.GravityScreen
 import com.agh.sensorsapp.ui.GyroscopeScreen
 import com.agh.sensorsapp.ui.LinearAccelerationScreen
+import com.agh.sensorsapp.ui.RotationVectorScreen
 import com.agh.sensorsapp.ui.StepCounterAndDetectorScreen
 import kotlinx.coroutines.launch
 
@@ -79,6 +80,12 @@ fun Drawer(navController: NavHostController) {
         NavigationItem(
             title = "Step Counter and Detector",
             route = "step_counter_and_detector",
+            selectedIcon = Icons.Filled.Settings,
+            unselectedIcon = Icons.Outlined.Settings,
+        ),
+        NavigationItem(
+            title = "Game and Geomagnetic Rotation Vector",
+            route = "game_and_geomagnetic_rotation_vector",
             selectedIcon = Icons.Filled.Settings,
             unselectedIcon = Icons.Outlined.Settings,
         ),
@@ -141,6 +148,9 @@ fun Drawer(navController: NavHostController) {
                     }
                     composable("step_counter_and_detector") {
                         StepCounterAndDetectorScreen()
+                    }
+                    composable("game_and_geomagnetic_rotation_vector") {
+                        RotationVectorScreen()
                     }
                 }
             }
