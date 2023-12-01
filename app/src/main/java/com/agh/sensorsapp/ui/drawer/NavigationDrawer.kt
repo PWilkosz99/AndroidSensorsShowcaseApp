@@ -28,6 +28,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.agh.sensorsapp.ui.AccelerometerScreen
+import com.agh.sensorsapp.ui.AmbientTemperatureScreen
 import com.agh.sensorsapp.ui.HomeScreen
 import com.agh.sensorsapp.ui.SettingsScreen
 import com.agh.sensorsapp.ui.GravityScreen
@@ -103,6 +104,12 @@ fun Drawer(navController: NavHostController) {
             selectedIcon = Icons.Filled.Settings,
             unselectedIcon = Icons.Outlined.Settings,
         ),
+        NavigationItem(
+            title = "Ambient Temperature",
+            route = "ambient_temperature",
+            selectedIcon = Icons.Filled.Settings,
+            unselectedIcon = Icons.Outlined.Settings,
+        ),
 
     )
 
@@ -171,6 +178,9 @@ fun Drawer(navController: NavHostController) {
                     }
                     composable("proximity") {
                         ProximityScreen()
+                    }
+                    composable("ambient_temperature") {
+                        AmbientTemperatureScreen()
                     }
                 }
             }
