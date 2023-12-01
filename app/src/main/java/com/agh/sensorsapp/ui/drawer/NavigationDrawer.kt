@@ -38,6 +38,7 @@ import com.agh.sensorsapp.ui.LinearAccelerationScreen
 import com.agh.sensorsapp.ui.MagneticScreen
 import com.agh.sensorsapp.ui.PressureScreen
 import com.agh.sensorsapp.ui.ProximityScreen
+import com.agh.sensorsapp.ui.RelativeHumidityScreen
 import com.agh.sensorsapp.ui.RotationVectorScreen
 import com.agh.sensorsapp.ui.StepCounterAndDetectorScreen
 import kotlinx.coroutines.launch
@@ -124,6 +125,12 @@ fun Drawer(navController: NavHostController) {
             selectedIcon = Icons.Filled.Settings,
             unselectedIcon = Icons.Outlined.Settings,
         ),
+        NavigationItem(
+            title = "Relative Humidity",
+            route = "humidity",
+            selectedIcon = Icons.Filled.Settings,
+            unselectedIcon = Icons.Outlined.Settings,
+        ),
 
     )
 
@@ -201,6 +208,9 @@ fun Drawer(navController: NavHostController) {
                     }
                     composable("pressure") {
                         PressureScreen()
+                    }
+                    composable("humidity") {
+                        RelativeHumidityScreen()
                     }
                 }
             }
