@@ -16,7 +16,6 @@ import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.MotionPhotosOn
 import androidx.compose.material.icons.filled.PhoneInTalk
 import androidx.compose.material.icons.filled.Public
-import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material.icons.filled.Speed
 import androidx.compose.material.icons.filled.SportsEsports
 import androidx.compose.material.icons.filled.Thermostat
@@ -30,7 +29,6 @@ import androidx.compose.material.icons.outlined.Home
 import androidx.compose.material.icons.outlined.MotionPhotosOn
 import androidx.compose.material.icons.outlined.PhoneInTalk
 import androidx.compose.material.icons.outlined.Public
-import androidx.compose.material.icons.outlined.Settings
 import androidx.compose.material.icons.outlined.Speed
 import androidx.compose.material.icons.outlined.SportsEsports
 import androidx.compose.material.icons.outlined.Thermostat
@@ -45,7 +43,7 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
@@ -57,7 +55,6 @@ import androidx.navigation.compose.composable
 import com.agh.sensorsapp.ui.AccelerometerScreen
 import com.agh.sensorsapp.ui.AmbientTemperatureScreen
 import com.agh.sensorsapp.ui.HomeScreen
-import com.agh.sensorsapp.ui.SettingsScreen
 import com.agh.sensorsapp.ui.GravityScreen
 import com.agh.sensorsapp.ui.GyroscopeScreen
 import com.agh.sensorsapp.ui.LightScreen
@@ -75,7 +72,6 @@ import kotlinx.coroutines.launch
 fun Drawer(navController: NavHostController) {
     val items = listOf(
         NavigationItem("Home", "home", Icons.Filled.Home, Icons.Outlined.Home),
-        NavigationItem("Settings", "settings", Icons.Filled.Settings, Icons.Outlined.Settings),
         NavigationItem("Accelerometer", "accelerometer", Icons.Filled.MotionPhotosOn, Icons.Outlined.MotionPhotosOn),
         NavigationItem("Gravity", "gravity", Icons.Filled.Public, Icons.Outlined.Public),
         NavigationItem("Gyroscope", "gyroscope", Icons.Filled.Gesture, Icons.Outlined.Gesture),
@@ -96,7 +92,7 @@ fun Drawer(navController: NavHostController) {
         val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
         val scope = rememberCoroutineScope()
         var selectedItemIndex by rememberSaveable {
-            mutableStateOf(0)
+            mutableIntStateOf(0)
         }
         ModalNavigationDrawer(
             drawerContent = {
@@ -135,9 +131,6 @@ fun Drawer(navController: NavHostController) {
                 NavHost(navController = navController, startDestination = "home") {
                     composable("home") {
                         HomeScreen()
-                    }
-                    composable("settings") {
-                        SettingsScreen()
                     }
                     composable("accelerometer") {
                         AccelerometerScreen()
