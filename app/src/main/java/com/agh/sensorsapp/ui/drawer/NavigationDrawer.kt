@@ -33,6 +33,7 @@ import com.agh.sensorsapp.ui.HomeScreen
 import com.agh.sensorsapp.ui.SettingsScreen
 import com.agh.sensorsapp.ui.GravityScreen
 import com.agh.sensorsapp.ui.GyroscopeScreen
+import com.agh.sensorsapp.ui.LightScreen
 import com.agh.sensorsapp.ui.LinearAccelerationScreen
 import com.agh.sensorsapp.ui.MagneticScreen
 import com.agh.sensorsapp.ui.ProximityScreen
@@ -110,6 +111,12 @@ fun Drawer(navController: NavHostController) {
             selectedIcon = Icons.Filled.Settings,
             unselectedIcon = Icons.Outlined.Settings,
         ),
+        NavigationItem(
+            title = "Light",
+            route = "light",
+            selectedIcon = Icons.Filled.Settings,
+            unselectedIcon = Icons.Outlined.Settings,
+        ),
 
     )
 
@@ -181,6 +188,9 @@ fun Drawer(navController: NavHostController) {
                     }
                     composable("ambient_temperature") {
                         AmbientTemperatureScreen()
+                    }
+                    composable("light") {
+                        LightScreen()
                     }
                 }
             }
