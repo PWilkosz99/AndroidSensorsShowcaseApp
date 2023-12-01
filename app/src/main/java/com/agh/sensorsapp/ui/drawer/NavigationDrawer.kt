@@ -1,9 +1,12 @@
 package com.agh.sensorsapp.ui.drawer
 
 import android.annotation.SuppressLint
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Settings
@@ -146,19 +149,26 @@ fun Drawer(navController: NavHostController) {
             drawerContent = {
                 ModalDrawerSheet {
                     Spacer(modifier = Modifier.height(16.dp))
-                    items.forEachIndexed { index, item ->
-                        DrawerItem(item = item,
-                            isSelected = index == selectedItemIndex,
-                            onItemClick = {
-                                selectedItemIndex = index
-                                scope.launch {
-                                    drawerState.close()
-                                    navController.navigate(item.route)
+                    Column(
+                        modifier = Modifier.verticalScroll(rememberScrollState())
+                    ) {
+                        items.forEachIndexed { index, item ->
+                            DrawerItem(
+                                item = item,
+                                isSelected = index == selectedItemIndex,
+                                onItemClick = {
+                                    selectedItemIndex = index
+                                    scope.launch {
+                                        drawerState.close()
+                                        navController.navigate(item.route)
+                                    }
                                 }
-                            })
+                            )
+                        }
                     }
                 }
-            }, drawerState = drawerState
+            },
+            drawerState = drawerState
         ) {
             Scaffold(
                 topBar = {
