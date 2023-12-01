@@ -34,6 +34,7 @@ import com.agh.sensorsapp.ui.GravityScreen
 import com.agh.sensorsapp.ui.GyroscopeScreen
 import com.agh.sensorsapp.ui.LinearAccelerationScreen
 import com.agh.sensorsapp.ui.MagneticScreen
+import com.agh.sensorsapp.ui.ProximityScreen
 import com.agh.sensorsapp.ui.RotationVectorScreen
 import com.agh.sensorsapp.ui.StepCounterAndDetectorScreen
 import kotlinx.coroutines.launch
@@ -93,6 +94,12 @@ fun Drawer(navController: NavHostController) {
         NavigationItem(
             title = "Magnetic",
             route = "magnetic",
+            selectedIcon = Icons.Filled.Settings,
+            unselectedIcon = Icons.Outlined.Settings,
+        ),
+        NavigationItem(
+            title = "Proximity",
+            route = "proximity",
             selectedIcon = Icons.Filled.Settings,
             unselectedIcon = Icons.Outlined.Settings,
         ),
@@ -161,6 +168,9 @@ fun Drawer(navController: NavHostController) {
                     }
                     composable("magnetic") {
                         MagneticScreen()
+                    }
+                    composable("proximity") {
+                        ProximityScreen()
                     }
                 }
             }
