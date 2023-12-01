@@ -17,6 +17,7 @@ import androidx.compose.material.icons.filled.MotionPhotosAuto
 import androidx.compose.material.icons.filled.MotionPhotosOn
 import androidx.compose.material.icons.filled.PhoneInTalk
 import androidx.compose.material.icons.filled.Public
+import androidx.compose.material.icons.filled.Rotate90DegreesCcw
 import androidx.compose.material.icons.filled.Speed
 import androidx.compose.material.icons.filled.SportsEsports
 import androidx.compose.material.icons.filled.Thermostat
@@ -31,6 +32,7 @@ import androidx.compose.material.icons.outlined.MotionPhotosAuto
 import androidx.compose.material.icons.outlined.MotionPhotosOn
 import androidx.compose.material.icons.outlined.PhoneInTalk
 import androidx.compose.material.icons.outlined.Public
+import androidx.compose.material.icons.outlined.Rotate90DegreesCcw
 import androidx.compose.material.icons.outlined.Speed
 import androidx.compose.material.icons.outlined.SportsEsports
 import androidx.compose.material.icons.outlined.Thermostat
@@ -64,6 +66,7 @@ import com.agh.sensorsapp.ui.LinearAccelerationScreen
 import com.agh.sensorsapp.ui.MagneticScreen
 import com.agh.sensorsapp.ui.PressureScreen
 import com.agh.sensorsapp.ui.ProximityScreen
+import com.agh.sensorsapp.ui.RawRotationVectorScreen
 import com.agh.sensorsapp.ui.RelativeHumidityScreen
 import com.agh.sensorsapp.ui.RotationVectorScreen
 import com.agh.sensorsapp.ui.SignificantMotionScreen
@@ -80,6 +83,7 @@ fun Drawer(navController: NavHostController) {
         NavigationItem("Gyroscope", "gyroscope", Icons.Filled.Gesture, Icons.Outlined.Gesture),
         NavigationItem("Linear Acceleration", "linear_acceleration", Icons.Filled.Explore, Icons.Outlined.Explore),
         NavigationItem("Significant Motion", "significant_motion", Icons.Filled.MotionPhotosAuto, Icons.Outlined.MotionPhotosAuto),
+        NavigationItem("Rotation Vector", "rotation_vector", Icons.Filled.Rotate90DegreesCcw, Icons.Outlined.Rotate90DegreesCcw),
         NavigationItem("Step Counter and Detector", "step_counter_and_detector", Icons.Filled.DirectionsRun, Icons.Outlined.DirectionsRun),
         NavigationItem("Game and Geomagnetic Rotation Vector", "game_and_geomagnetic_rotation_vector", Icons.Filled.SportsEsports, Icons.Outlined.SportsEsports),
         NavigationItem("Magnetic", "magnetic", Icons.Filled.HelpOutline, Icons.Outlined.HelpOutline),
@@ -150,6 +154,9 @@ fun Drawer(navController: NavHostController) {
                     }
                     composable("significant_motion") {
                         SignificantMotionScreen()
+                    }
+                    composable("rotation_vector"){
+                        RawRotationVectorScreen()
                     }
                     composable("step_counter_and_detector") {
                         StepCounterAndDetectorScreen()
