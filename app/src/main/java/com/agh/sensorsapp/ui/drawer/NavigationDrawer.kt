@@ -8,10 +8,34 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.DirectionsRun
+import androidx.compose.material.icons.filled.Explore
+import androidx.compose.material.icons.filled.Gesture
+import androidx.compose.material.icons.filled.HelpOutline
 import androidx.compose.material.icons.filled.Home
+import androidx.compose.material.icons.filled.MotionPhotosOn
+import androidx.compose.material.icons.filled.PhoneInTalk
+import androidx.compose.material.icons.filled.Public
 import androidx.compose.material.icons.filled.Settings
+import androidx.compose.material.icons.filled.Speed
+import androidx.compose.material.icons.filled.SportsEsports
+import androidx.compose.material.icons.filled.Thermostat
+import androidx.compose.material.icons.filled.WaterDamage
+import androidx.compose.material.icons.filled.WbSunny
+import androidx.compose.material.icons.outlined.DirectionsRun
+import androidx.compose.material.icons.outlined.Explore
+import androidx.compose.material.icons.outlined.Gesture
+import androidx.compose.material.icons.outlined.HelpOutline
 import androidx.compose.material.icons.outlined.Home
+import androidx.compose.material.icons.outlined.MotionPhotosOn
+import androidx.compose.material.icons.outlined.PhoneInTalk
+import androidx.compose.material.icons.outlined.Public
 import androidx.compose.material.icons.outlined.Settings
+import androidx.compose.material.icons.outlined.Speed
+import androidx.compose.material.icons.outlined.SportsEsports
+import androidx.compose.material.icons.outlined.Thermostat
+import androidx.compose.material.icons.outlined.WaterDamage
+import androidx.compose.material.icons.outlined.WbSunny
 import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalDrawerSheet
@@ -50,91 +74,20 @@ import kotlinx.coroutines.launch
 @Composable
 fun Drawer(navController: NavHostController) {
     val items = listOf(
-        NavigationItem(
-            title = "Home",
-            route = "home",
-            selectedIcon = Icons.Filled.Home,
-            unselectedIcon = Icons.Outlined.Home,
-        ),
-        NavigationItem(
-            title = "Settings",
-            route = "settings",
-            selectedIcon = Icons.Filled.Settings,
-            unselectedIcon = Icons.Outlined.Settings,
-        ),
-        NavigationItem(
-            title = "Accelerometer",
-            route = "accelerometer",
-            selectedIcon = Icons.Filled.Settings,
-            unselectedIcon = Icons.Outlined.Settings,
-        ),
-        NavigationItem(
-            title = "Gravity",
-            route = "gravity",
-            selectedIcon = Icons.Filled.Settings,
-            unselectedIcon = Icons.Outlined.Settings,
-        ),
-        NavigationItem(
-            title = "Gyroscope",
-            route = "gyroscope",
-            selectedIcon = Icons.Filled.Settings,
-            unselectedIcon = Icons.Outlined.Settings,
-        ),
-        NavigationItem(
-            title = "Linear Acceleration",
-            route = "linear_acceleration",
-            selectedIcon = Icons.Filled.Settings,
-            unselectedIcon = Icons.Outlined.Settings,
-        ),
-        NavigationItem(
-            title = "Step Counter and Detector",
-            route = "step_counter_and_detector",
-            selectedIcon = Icons.Filled.Settings,
-            unselectedIcon = Icons.Outlined.Settings,
-        ),
-        NavigationItem(
-            title = "Game and Geomagnetic Rotation Vector",
-            route = "game_and_geomagnetic_rotation_vector",
-            selectedIcon = Icons.Filled.Settings,
-            unselectedIcon = Icons.Outlined.Settings,
-        ),
-        NavigationItem(
-            title = "Magnetic",
-            route = "magnetic",
-            selectedIcon = Icons.Filled.Settings,
-            unselectedIcon = Icons.Outlined.Settings,
-        ),
-        NavigationItem(
-            title = "Proximity",
-            route = "proximity",
-            selectedIcon = Icons.Filled.Settings,
-            unselectedIcon = Icons.Outlined.Settings,
-        ),
-        NavigationItem(
-            title = "Ambient Temperature",
-            route = "ambient_temperature",
-            selectedIcon = Icons.Filled.Settings,
-            unselectedIcon = Icons.Outlined.Settings,
-        ),
-        NavigationItem(
-            title = "Light",
-            route = "light",
-            selectedIcon = Icons.Filled.Settings,
-            unselectedIcon = Icons.Outlined.Settings,
-        ),
-        NavigationItem(
-            title = "Pressure",
-            route = "pressure",
-            selectedIcon = Icons.Filled.Settings,
-            unselectedIcon = Icons.Outlined.Settings,
-        ),
-        NavigationItem(
-            title = "Relative Humidity",
-            route = "humidity",
-            selectedIcon = Icons.Filled.Settings,
-            unselectedIcon = Icons.Outlined.Settings,
-        ),
-
+        NavigationItem("Home", "home", Icons.Filled.Home, Icons.Outlined.Home),
+        NavigationItem("Settings", "settings", Icons.Filled.Settings, Icons.Outlined.Settings),
+        NavigationItem("Accelerometer", "accelerometer", Icons.Filled.MotionPhotosOn, Icons.Outlined.MotionPhotosOn),
+        NavigationItem("Gravity", "gravity", Icons.Filled.Public, Icons.Outlined.Public),
+        NavigationItem("Gyroscope", "gyroscope", Icons.Filled.Gesture, Icons.Outlined.Gesture),
+        NavigationItem("Linear Acceleration", "linear_acceleration", Icons.Filled.Explore, Icons.Outlined.Explore),
+        NavigationItem("Step Counter and Detector", "step_counter_and_detector", Icons.Filled.DirectionsRun, Icons.Outlined.DirectionsRun),
+        NavigationItem("Game and Geomagnetic Rotation Vector", "game_and_geomagnetic_rotation_vector", Icons.Filled.SportsEsports, Icons.Outlined.SportsEsports),
+        NavigationItem("Magnetic", "magnetic", Icons.Filled.HelpOutline, Icons.Outlined.HelpOutline),
+        NavigationItem("Proximity", "proximity", Icons.Filled.PhoneInTalk, Icons.Outlined.PhoneInTalk),
+        NavigationItem("Ambient Temperature", "ambient_temperature", Icons.Filled.Thermostat, Icons.Outlined.Thermostat),
+        NavigationItem("Light", "light", Icons.Filled.WbSunny, Icons.Outlined.WbSunny),
+        NavigationItem("Pressure", "pressure", Icons.Filled.Speed, Icons.Outlined.Speed),
+        NavigationItem("Relative Humidity", "humidity", Icons.Filled.WaterDamage, Icons.Outlined.WaterDamage),
     )
 
     Surface(
