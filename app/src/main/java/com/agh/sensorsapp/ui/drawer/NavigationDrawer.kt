@@ -36,6 +36,7 @@ import com.agh.sensorsapp.ui.GyroscopeScreen
 import com.agh.sensorsapp.ui.LightScreen
 import com.agh.sensorsapp.ui.LinearAccelerationScreen
 import com.agh.sensorsapp.ui.MagneticScreen
+import com.agh.sensorsapp.ui.PressureScreen
 import com.agh.sensorsapp.ui.ProximityScreen
 import com.agh.sensorsapp.ui.RotationVectorScreen
 import com.agh.sensorsapp.ui.StepCounterAndDetectorScreen
@@ -117,6 +118,12 @@ fun Drawer(navController: NavHostController) {
             selectedIcon = Icons.Filled.Settings,
             unselectedIcon = Icons.Outlined.Settings,
         ),
+        NavigationItem(
+            title = "Pressure",
+            route = "pressure",
+            selectedIcon = Icons.Filled.Settings,
+            unselectedIcon = Icons.Outlined.Settings,
+        ),
 
     )
 
@@ -191,6 +198,9 @@ fun Drawer(navController: NavHostController) {
                     }
                     composable("light") {
                         LightScreen()
+                    }
+                    composable("pressure") {
+                        PressureScreen()
                     }
                 }
             }
