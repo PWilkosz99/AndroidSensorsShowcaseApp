@@ -19,53 +19,65 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 
 @Composable
-fun AmbientTemperatureScreen() {
+fun RelativeHumidityScreen() {
     val context = LocalContext.current
 
-    val ambientTemperatureSensorListener = remember { AmbientTemperatureSensorListener(context) }
+    val humiditySensorListener = remember { RelativeHumiditySensorListener(context) }
 
-    DisposableEffect(ambientTemperatureSensorListener) {
-        ambientTemperatureSensorListener.startListening()
+    DisposableEffect(humiditySensorListener) {
+        humiditySensorListener.startListening()
 
         onDispose {
-            ambientTemperatureSensorListener.stopListening()
+            humiditySensorListener.stopListening()
         }
     }
 
-    val ambientTemperatureState by ambientTemperatureSensorListener.ambientTemperature.collectAsState()
-
-    val ambientTemperatureValue = ambientTemperatureState
+    val humidityState by humiditySensorListener.relativeHumidity.collectAsState()
 
     Box(
         modifier = Modifier.fillMaxSize(),
         contentAlignment = Alignment.Center
     ) {
-        Column(
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Center,
-            modifier = Modifier.padding(16.dp)
-        ) {
-            Text(text = "Ambient Temperature Sensor Value", style = MaterialTheme.typography.bodyMedium)
-            Spacer(modifier = Modifier.height(16.dp))
-            Text(text = "Value: $ambientTemperatureValue")
+        if (humiditySensorListener.isAvailable) {
+            Column(
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.Center,
+                modifier = Modifier.padding(16.dp)
+            ) {
+                Text(
+                    text = "Relative Humidity Sensor Value",
+                    style = MaterialTheme.typography.bodyMedium
+                )
+                Spacer(modifier = Modifier.height(16.dp))
+                Text(text = "Value: $humidityState")
 
-            Spacer(modifier = Modifier.height(32.dp))
+                Spacer(modifier = Modifier.height(32.dp))
+            }
+        } else {
+            Text(
+                text = "Relative humidity sensor is not available on this device",
+                style = MaterialTheme.typography.bodyMedium
+            )
         }
     }
 }
 
-class AmbientTemperatureSensorListener(context: Context) {
+class RelativeHumiditySensorListener(context: Context) {
 
     private val sensorManager: SensorManager =
         context.getSystemService(Context.SENSOR_SERVICE) as SensorManager
 
-    private val ambientTemperatureSensor: Sensor? = sensorManager.getDefaultSensor(Sensor.TYPE_AMBIENT_TEMPERATURE)
+    private val humiditySensor: Sensor? =
+        sensorManager.getDefaultSensor(Sensor.TYPE_RELATIVE_HUMIDITY)
 
-    private val _ambientTemperature = MutableStateFlow(0f)
-    val ambientTemperature: StateFlow<Float> = _ambientTemperature
+    private val _relativeHumidity = MutableStateFlow(0f)
+    val relativeHumidity: StateFlow<Float> = _relativeHumidity
+
+    val isAvailable: Boolean
+        get() = humiditySensor != null
 
     fun startListening() {
-        ambientTemperatureSensor?.let { sensor ->
+        humiditySensor?.let { sensor ->
             sensorManager.registerListener(
                 sensorEventListener, sensor, SensorManager.SENSOR_DELAY_NORMAL
             )
@@ -79,9 +91,9 @@ class AmbientTemperatureSensorListener(context: Context) {
     private val sensorEventListener = object : SensorEventListener {
         override fun onSensorChanged(event: SensorEvent?) {
             event?.let {
-                if (it.sensor.type == Sensor.TYPE_AMBIENT_TEMPERATURE) {
+                if (it.sensor.type == Sensor.TYPE_RELATIVE_HUMIDITY) {
                     val value = it.values[0]
-                    _ambientTemperature.value = value
+                    _relativeHumidity.value = value
                 }
             }
         }

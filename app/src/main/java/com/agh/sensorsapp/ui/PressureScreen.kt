@@ -40,16 +40,26 @@ fun PressureScreen() {
         modifier = Modifier.fillMaxSize(),
         contentAlignment = Alignment.Center
     ) {
-        Column(
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Center,
-            modifier = Modifier.padding(16.dp)
-        ) {
-            Text(text = "Pressure Sensor Value", style = MaterialTheme.typography.bodyMedium)
-            Spacer(modifier = Modifier.height(16.dp))
-            Text(text = "Value: $pressureValue")
+        if (pressureSensorListener.isAvailable) {
+            Column(
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.Center,
+                modifier = Modifier.padding(16.dp)
+            ) {
+                Text(
+                    text = "Pressure Sensor Value",
+                    style = MaterialTheme.typography.bodyMedium
+                )
+                Spacer(modifier = Modifier.height(16.dp))
+                Text(text = "Value: $pressureValue")
 
-            Spacer(modifier = Modifier.height(32.dp))
+                Spacer(modifier = Modifier.height(32.dp))
+            }
+        } else {
+            Text(
+                text = "Pressure sensor is not available on this device",
+                style = MaterialTheme.typography.bodyMedium
+            )
         }
     }
 }
@@ -63,6 +73,9 @@ class PressureSensorListener(context: Context) {
 
     private val _pressure = MutableStateFlow(0f)
     val pressure: StateFlow<Float> = _pressure
+
+    val isAvailable: Boolean
+        get() = pressureSensor != null
 
     fun startListening() {
         pressureSensor?.let { sensor ->

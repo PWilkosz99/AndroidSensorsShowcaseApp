@@ -24,30 +24,48 @@ fun SignificantMotionScreen() {
 
     val significantMotionSensorListener = remember { SignificantMotionSensorListener(context) }
 
-    DisposableEffect(significantMotionSensorListener) {
-        significantMotionSensorListener.startListening()
+    val isSignificantMotionAvailable = significantMotionSensorListener.isSensorAvailable()
 
-        onDispose {
-            significantMotionSensorListener.stopListening()
+    if (isSignificantMotionAvailable) {
+        DisposableEffect(significantMotionSensorListener) {
+            significantMotionSensorListener.startListening()
+
+            onDispose {
+                significantMotionSensorListener.stopListening()
+            }
         }
-    }
 
-    val motionDetectedState by significantMotionSensorListener.motionDetected.collectAsState()
+        val motionDetectedState by significantMotionSensorListener.motionDetected.collectAsState()
 
-    Box(
-        modifier = Modifier.fillMaxSize(),
-        contentAlignment = Alignment.Center
-    ) {
-        Column(
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Center,
-            modifier = Modifier.padding(16.dp)
+        Box(
+            modifier = Modifier.fillMaxSize(),
+            contentAlignment = Alignment.Center
         ) {
-            Text(text = "Significant Motion Sensor", style = MaterialTheme.typography.bodyMedium)
-            Spacer(modifier = Modifier.height(16.dp))
-            Text(text = "Motion Detected: $motionDetectedState")
+            Column(
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.Center,
+                modifier = Modifier.padding(16.dp)
+            ) {
+                Text(
+                    text = "Significant Motion Sensor",
+                    style = MaterialTheme.typography.bodyMedium
+                )
+                Spacer(modifier = Modifier.height(16.dp))
+                Text(text = "Motion Detected: $motionDetectedState")
 
-            Spacer(modifier = Modifier.height(32.dp))
+                Spacer(modifier = Modifier.height(32.dp))
+            }
+        }
+    } else {
+        Box(
+            modifier = Modifier.fillMaxSize(),
+            contentAlignment = Alignment.Center
+        ) {
+            Text(
+                text = "Significant Motion sensor is not available on this device.",
+                style = MaterialTheme.typography.bodyMedium,
+                modifier = Modifier.padding(16.dp)
+            )
         }
     }
 }
@@ -62,6 +80,10 @@ class SignificantMotionSensorListener(context: Context) {
 
     private val _motionDetected = MutableStateFlow(false)
     val motionDetected: StateFlow<Boolean> = _motionDetected
+
+    fun isSensorAvailable(): Boolean {
+        return significantMotionSensor != null
+    }
 
     fun startListening() {
         significantMotionSensor?.let { sensor ->
@@ -79,7 +101,6 @@ class SignificantMotionSensorListener(context: Context) {
         override fun onSensorChanged(event: SensorEvent?) {
             event?.let {
                 if (it.sensor.type == Sensor.TYPE_SIGNIFICANT_MOTION) {
-                    // Assuming significant motion is detected when the event occurs
                     _motionDetected.value = true
                 }
             }

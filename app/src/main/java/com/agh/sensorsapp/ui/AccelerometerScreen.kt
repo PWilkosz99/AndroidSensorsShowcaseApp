@@ -37,22 +37,28 @@ fun AccelerometerScreen() {
 
     val (x, y, z) = accelerationState
 
-
     Box(
         modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center
     ) {
-        Column(
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Center,
-            modifier = Modifier.padding(16.dp)
-        ) {
-            Text(text = "Accelerometer Values", style = MaterialTheme.typography.bodyMedium)
-            Spacer(modifier = Modifier.height(16.dp))
-            Text(text = "X: $x")
-            Text(text = "Y: $y")
-            Text(text = "Z: $z")
+        if (sensorListener.isAvailable) {
+            Column(
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.Center,
+                modifier = Modifier.padding(16.dp)
+            ) {
+                Text(text = "Accelerometer Values", style = MaterialTheme.typography.bodyMedium)
+                Spacer(modifier = Modifier.height(16.dp))
+                Text(text = "X: $x")
+                Text(text = "Y: $y")
+                Text(text = "Z: $z")
 
-            Spacer(modifier = Modifier.height(32.dp))
+                Spacer(modifier = Modifier.height(32.dp))
+            }
+        } else {
+            Text(
+                text = "Accelerometer is not available on this device",
+                style = MaterialTheme.typography.bodyMedium
+            )
         }
     }
 }
@@ -66,6 +72,9 @@ class AccelerometerListener(context: Context) {
 
     private val _acceleration = MutableStateFlow(Triple(0f, 0f, 0f))
     val acceleration: StateFlow<Triple<Float, Float, Float>> = _acceleration
+
+    val isAvailable: Boolean
+        get() = accelerometer != null
 
     fun startListening() {
         accelerometer?.let { sensor ->

@@ -19,69 +19,63 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 
 @Composable
-fun MagneticScreen() {
+fun AmbientTemperatureScreen() {
     val context = LocalContext.current
 
-    val magneticFieldListener = remember { MagneticFieldSensorListener(context) }
+    val ambientTemperatureSensorListener = remember { AmbientTemperatureSensorListener(context) }
 
-    DisposableEffect(magneticFieldListener) {
-        magneticFieldListener.startListening()
+    DisposableEffect(ambientTemperatureSensorListener) {
+        ambientTemperatureSensorListener.startListening()
 
         onDispose {
-            magneticFieldListener.stopListening()
+            ambientTemperatureSensorListener.stopListening()
         }
     }
 
-    val magneticFieldState by magneticFieldListener.magneticField.collectAsState()
+    val ambientTemperatureState by ambientTemperatureSensorListener.ambientTemperature.collectAsState()
 
-    val (magX, magY, magZ) = magneticFieldState
+    val ambientTemperatureValue = ambientTemperatureState
 
     Box(
         modifier = Modifier.fillMaxSize(),
         contentAlignment = Alignment.Center
     ) {
-        if (magneticFieldListener.isAvailable) {
+        if (ambientTemperatureSensorListener.isAvailable) {
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.Center,
                 modifier = Modifier.padding(16.dp)
             ) {
-                Text(
-                    text = "Magnetic Field Sensor Values",
-                    style = MaterialTheme.typography.bodyMedium
-                )
+                Text(text = "Ambient Temperature Sensor Value", style = MaterialTheme.typography.bodyMedium)
                 Spacer(modifier = Modifier.height(16.dp))
-                Text(text = "X: $magX")
-                Text(text = "Y: $magY")
-                Text(text = "Z: $magZ")
+                Text(text = "Value: $ambientTemperatureValue")
 
                 Spacer(modifier = Modifier.height(32.dp))
             }
         } else {
             Text(
-                text = "Magnetic Field sensor is not available on this device",
+                text = "Ambient Temperature sensor is not available on this device",
                 style = MaterialTheme.typography.bodyMedium
             )
         }
     }
 }
 
-class MagneticFieldSensorListener(context: Context) {
+class AmbientTemperatureSensorListener(context: Context) {
 
     private val sensorManager: SensorManager =
         context.getSystemService(Context.SENSOR_SERVICE) as SensorManager
 
-    private val magneticFieldSensor: Sensor? =
-        sensorManager.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD)
+    private val ambientTemperatureSensor: Sensor? = sensorManager.getDefaultSensor(Sensor.TYPE_AMBIENT_TEMPERATURE)
 
-    private val _magneticField = MutableStateFlow(Triple(0f, 0f, 0f))
-    val magneticField: StateFlow<Triple<Float, Float, Float>> = _magneticField
+    private val _ambientTemperature = MutableStateFlow(0f)
+    val ambientTemperature: StateFlow<Float> = _ambientTemperature
 
     val isAvailable: Boolean
-        get() = magneticFieldSensor != null
+        get() = ambientTemperatureSensor != null
 
     fun startListening() {
-        magneticFieldSensor?.let { sensor ->
+        ambientTemperatureSensor?.let { sensor ->
             sensorManager.registerListener(
                 sensorEventListener, sensor, SensorManager.SENSOR_DELAY_NORMAL
             )
@@ -95,9 +89,9 @@ class MagneticFieldSensorListener(context: Context) {
     private val sensorEventListener = object : SensorEventListener {
         override fun onSensorChanged(event: SensorEvent?) {
             event?.let {
-                if (it.sensor.type == Sensor.TYPE_MAGNETIC_FIELD) {
-                    val values = Triple(it.values[0], it.values[1], it.values[2])
-                    _magneticField.value = values
+                if (it.sensor.type == Sensor.TYPE_AMBIENT_TEMPERATURE) {
+                    val value = it.values[0]
+                    _ambientTemperature.value = value
                 }
             }
         }

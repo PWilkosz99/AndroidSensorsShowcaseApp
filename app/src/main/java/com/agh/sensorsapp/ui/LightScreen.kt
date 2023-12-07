@@ -40,16 +40,23 @@ fun LightScreen() {
         modifier = Modifier.fillMaxSize(),
         contentAlignment = Alignment.Center
     ) {
-        Column(
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Center,
-            modifier = Modifier.padding(16.dp)
-        ) {
-            Text(text = "Light Sensor Value", style = MaterialTheme.typography.bodyMedium)
-            Spacer(modifier = Modifier.height(16.dp))
-            Text(text = "Value: $lightValue")
+        if (lightSensorListener.isAvailable) {
+            Column(
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.Center,
+                modifier = Modifier.padding(16.dp)
+            ) {
+                Text(text = "Light Sensor Value", style = MaterialTheme.typography.bodyMedium)
+                Spacer(modifier = Modifier.height(16.dp))
+                Text(text = "Value: $lightValue")
 
-            Spacer(modifier = Modifier.height(32.dp))
+                Spacer(modifier = Modifier.height(32.dp))
+            }
+        } else {
+            Text(
+                text = "Light sensor is not available on this device",
+                style = MaterialTheme.typography.bodyMedium
+            )
         }
     }
 }
@@ -63,6 +70,9 @@ class LightSensorListener(context: Context) {
 
     private val _light = MutableStateFlow(0f)
     val light: StateFlow<Float> = _light
+
+    val isAvailable: Boolean
+        get() = lightSensor != null
 
     fun startListening() {
         lightSensor?.let { sensor ->

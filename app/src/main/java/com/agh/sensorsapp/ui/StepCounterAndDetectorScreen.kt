@@ -25,9 +25,17 @@ fun StepCounterAndDetectorScreen() {
     val stepCounterListener = remember { StepCounterSensorListener(context) }
     val stepDetectorListener = remember { StepDetectorSensorListener(context) }
 
+    val isStepCounterAvailable = stepCounterListener.isSensorAvailable()
+    val isStepDetectorAvailable = stepDetectorListener.isSensorAvailable()
+
     DisposableEffect(stepCounterListener, stepDetectorListener) {
-        stepCounterListener.startListening()
-        stepDetectorListener.startListening()
+        if (isStepCounterAvailable) {
+            stepCounterListener.startListening()
+        }
+
+        if (isStepDetectorAvailable) {
+            stepDetectorListener.startListening()
+        }
 
         onDispose {
             stepCounterListener.stopListening()
@@ -50,10 +58,23 @@ fun StepCounterAndDetectorScreen() {
             verticalArrangement = Arrangement.Center,
             modifier = Modifier.padding(16.dp)
         ) {
-            Text(text = "Step Counter and Detector Sensor Values", style = MaterialTheme.typography.bodyMedium)
+            Text(
+                text = "Step Counter and Detector Sensor Values",
+                style = MaterialTheme.typography.bodyMedium
+            )
             Spacer(modifier = Modifier.height(16.dp))
-            Text(text = "Cumulative Steps: $steps")
-            Text(text = "Detected Steps: $detectedSteps")
+
+            if (isStepCounterAvailable) {
+                Text(text = "Cumulative Steps: $steps")
+            } else {
+                Text(text = "Step Counter sensor is not available on this device.")
+            }
+
+            if (isStepDetectorAvailable) {
+                Text(text = "Detected Steps: $detectedSteps")
+            } else {
+                Text(text = "Step Detector sensor is not available on this device.")
+            }
 
             Spacer(modifier = Modifier.height(32.dp))
         }
@@ -69,6 +90,10 @@ class StepDetectorSensorListener(context: Context) {
 
     private val _stepDetectorCount = MutableStateFlow(0)
     val stepDetectorCount: StateFlow<Int> = _stepDetectorCount
+
+    fun isSensorAvailable(): Boolean {
+        return stepDetectorSensor != null
+    }
 
     fun startListening() {
         stepDetectorSensor?.let { sensor ->
@@ -107,6 +132,10 @@ class StepCounterSensorListener(context: Context) {
 
     private val _stepCounter = MutableStateFlow(0)
     val stepCounter: StateFlow<Int> = _stepCounter
+
+    fun isSensorAvailable(): Boolean {
+        return stepCounterSensor != null
+    }
 
     fun startListening() {
         stepCounterSensor?.let { sensor ->

@@ -40,16 +40,26 @@ fun ProximityScreen() {
         modifier = Modifier.fillMaxSize(),
         contentAlignment = Alignment.Center
     ) {
-        Column(
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Center,
-            modifier = Modifier.padding(16.dp)
-        ) {
-            Text(text = "Proximity Sensor Value", style = MaterialTheme.typography.bodyMedium)
-            Spacer(modifier = Modifier.height(16.dp))
-            Text(text = "Value: $proximityValue")
+        if (proximitySensorListener.isAvailable) {
+            Column(
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.Center,
+                modifier = Modifier.padding(16.dp)
+            ) {
+                Text(
+                    text = "Proximity Sensor Value",
+                    style = MaterialTheme.typography.bodyMedium
+                )
+                Spacer(modifier = Modifier.height(16.dp))
+                Text(text = "Value: $proximityValue")
 
-            Spacer(modifier = Modifier.height(32.dp))
+                Spacer(modifier = Modifier.height(32.dp))
+            }
+        } else {
+            Text(
+                text = "Proximity sensor is not available on this device",
+                style = MaterialTheme.typography.bodyMedium
+            )
         }
     }
 }
@@ -59,10 +69,14 @@ class ProximitySensorListener(context: Context) {
     private val sensorManager: SensorManager =
         context.getSystemService(Context.SENSOR_SERVICE) as SensorManager
 
-    private val proximitySensor: Sensor? = sensorManager.getDefaultSensor(Sensor.TYPE_PROXIMITY)
+    private val proximitySensor: Sensor? =
+        sensorManager.getDefaultSensor(Sensor.TYPE_PROXIMITY)
 
     private val _proximity = MutableStateFlow(0f)
     val proximity: StateFlow<Float> = _proximity
+
+    val isAvailable: Boolean
+        get() = proximitySensor != null
 
     fun startListening() {
         proximitySensor?.let { sensor ->

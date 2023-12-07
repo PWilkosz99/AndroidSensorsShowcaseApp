@@ -20,50 +20,74 @@ import kotlinx.coroutines.flow.StateFlow
 fun RotationVectorScreen() {
     val context = LocalContext.current
 
-    val gameRotationVectorListener = remember { RotationVectorSensorListener(context, Sensor.TYPE_GAME_ROTATION_VECTOR) }
-    val geomagneticRotationVectorListener = remember { RotationVectorSensorListener(context, Sensor.TYPE_GEOMAGNETIC_ROTATION_VECTOR) }
-
-    DisposableEffect(gameRotationVectorListener, geomagneticRotationVectorListener) {
-        gameRotationVectorListener.startListening()
-        geomagneticRotationVectorListener.startListening()
-
-        onDispose {
-            gameRotationVectorListener.stopListening()
-            geomagneticRotationVectorListener.stopListening()
-        }
+    val gameRotationVectorListener = remember {
+        RotationVectorSensorListener(context, Sensor.TYPE_GAME_ROTATION_VECTOR)
     }
 
-    val gameRotationVectorState by gameRotationVectorListener.rotationVector.collectAsState()
-    val geomagneticRotationVectorState by geomagneticRotationVectorListener.rotationVector.collectAsState()
+    val geomagneticRotationVectorListener = remember {
+        RotationVectorSensorListener(context, Sensor.TYPE_GEOMAGNETIC_ROTATION_VECTOR)
+    }
 
-    val (gameX, gameY, gameZ) = gameRotationVectorState
-    val (geoX, geoY, geoZ) = geomagneticRotationVectorState
+    val isGameRotationVectorAvailable = gameRotationVectorListener.isSensorAvailable()
+    val isGeomagneticRotationVectorAvailable = geomagneticRotationVectorListener.isSensorAvailable()
 
-    Box(
-        modifier = Modifier.fillMaxSize(),
-        contentAlignment = Alignment.Center
-    ) {
-        Column(
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Center,
-            modifier = Modifier.padding(16.dp)
-        ) {
-            Text(text = "Game Rotation Vector Sensor Values", style = MaterialTheme.typography.bodyMedium)
-            Spacer(modifier = Modifier.height(16.dp))
-            Text(text = "X: $gameX")
-            Text(text = "Y: $gameY")
-            Text(text = "Z: $gameZ")
+    if (isGameRotationVectorAvailable || isGeomagneticRotationVectorAvailable) {
+        DisposableEffect(gameRotationVectorListener, geomagneticRotationVectorListener) {
+            if (isGameRotationVectorAvailable) {
+                gameRotationVectorListener.startListening()
+            }
 
-            Spacer(modifier = Modifier.height(32.dp))
+            if (isGeomagneticRotationVectorAvailable) {
+                geomagneticRotationVectorListener.startListening()
+            }
 
-            Text(text = "Geomagnetic Rotation Vector Sensor Values", style = MaterialTheme.typography.bodyMedium)
-            Spacer(modifier = Modifier.height(16.dp))
-            Text(text = "X: $geoX")
-            Text(text = "Y: $geoY")
-            Text(text = "Z: $geoZ")
-
-            Spacer(modifier = Modifier.height(32.dp))
+            onDispose {
+                gameRotationVectorListener.stopListening()
+                geomagneticRotationVectorListener.stopListening()
+            }
         }
+
+        val gameRotationVectorState by gameRotationVectorListener.rotationVector.collectAsState()
+        val geomagneticRotationVectorState by geomagneticRotationVectorListener.rotationVector.collectAsState()
+
+        val (gameX, gameY, gameZ) = gameRotationVectorState
+        val (geoX, geoY, geoZ) = geomagneticRotationVectorState
+
+        Box(
+            modifier = Modifier.fillMaxSize(),
+            contentAlignment = Alignment.Center
+        ) {
+            Column(
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.Center,
+                modifier = Modifier.padding(16.dp)
+            ) {
+                if (isGameRotationVectorAvailable) {
+                    Text(text = "Game Rotation Vector Sensor Values", style = MaterialTheme.typography.bodyMedium)
+                    Spacer(modifier = Modifier.height(16.dp))
+                    Text(text = "X: $gameX")
+                    Text(text = "Y: $gameY")
+                    Text(text = "Z: $gameZ")
+
+                    Spacer(modifier = Modifier.height(32.dp))
+                }
+
+                if (isGeomagneticRotationVectorAvailable) {
+                    Text(
+                        text = "Geomagnetic Rotation Vector Sensor Values",
+                        style = MaterialTheme.typography.bodyMedium
+                    )
+                    Spacer(modifier = Modifier.height(16.dp))
+                    Text(text = "X: $geoX")
+                    Text(text = "Y: $geoY")
+                    Text(text = "Z: $geoZ")
+
+                    Spacer(modifier = Modifier.height(32.dp))
+                }
+            }
+        }
+    } else {
+        Text(text = "No rotation sensors available", modifier = Modifier.padding(16.dp))
     }
 }
 
@@ -76,6 +100,10 @@ class RotationVectorSensorListener(context: Context, private val sensorType: Int
 
     private val _rotationVector = MutableStateFlow(Triple(0f, 0f, 0f))
     val rotationVector: StateFlow<Triple<Float, Float, Float>> = _rotationVector
+
+    fun isSensorAvailable(): Boolean {
+        return rotationVectorSensor != null
+    }
 
     fun startListening() {
         rotationVectorSensor?.let { sensor ->

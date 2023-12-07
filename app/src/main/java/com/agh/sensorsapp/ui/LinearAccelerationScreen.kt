@@ -40,18 +40,28 @@ fun LinearAccelerationScreen() {
         modifier = Modifier.fillMaxSize(),
         contentAlignment = Alignment.Center
     ) {
-        Column(
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Center,
-            modifier = Modifier.padding(16.dp)
-        ) {
-            Text(text = "Linear Acceleration Sensor Values", style = MaterialTheme.typography.bodyMedium)
-            Spacer(modifier = Modifier.height(16.dp))
-            Text(text = "X: $x")
-            Text(text = "Y: $y")
-            Text(text = "Z: $z")
+        if (sensorListener.isAvailable) {
+            Column(
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.Center,
+                modifier = Modifier.padding(16.dp)
+            ) {
+                Text(
+                    text = "Linear Acceleration Sensor Values",
+                    style = MaterialTheme.typography.bodyMedium
+                )
+                Spacer(modifier = Modifier.height(16.dp))
+                Text(text = "X: $x")
+                Text(text = "Y: $y")
+                Text(text = "Z: $z")
 
-            Spacer(modifier = Modifier.height(32.dp))
+                Spacer(modifier = Modifier.height(32.dp))
+            }
+        } else {
+            Text(
+                text = "Linear Acceleration sensor not available on this device",
+                style = MaterialTheme.typography.bodyMedium
+            )
         }
     }
 }
@@ -61,10 +71,14 @@ class LinearAccelerationSensorListener(context: Context) {
     private val sensorManager: SensorManager =
         context.getSystemService(Context.SENSOR_SERVICE) as SensorManager
 
-    private val linearAccelerationSensor: Sensor? = sensorManager.getDefaultSensor(Sensor.TYPE_LINEAR_ACCELERATION)
+    private val linearAccelerationSensor: Sensor? =
+        sensorManager.getDefaultSensor(Sensor.TYPE_LINEAR_ACCELERATION)
 
     private val _linearAcceleration = MutableStateFlow(Triple(0f, 0f, 0f))
     val linearAcceleration: StateFlow<Triple<Float, Float, Float>> = _linearAcceleration
+
+    val isAvailable: Boolean
+        get() = linearAccelerationSensor != null
 
     fun startListening() {
         linearAccelerationSensor?.let { sensor ->
